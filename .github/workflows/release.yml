@@ -1,10 +1,13 @@
 name: Release
 
-on: [push, pull_request]
+on:
+  release:
+    types: [published]
 
 jobs:
   release:
     runs-on: ubuntu-20.04
+    timeout-minutes: 60
     strategy:
       matrix:
         abi: [ "armeabi-v7a", "arm64-v8a", "x86", "x86_64" ]
@@ -23,3 +26,12 @@ jobs:
           export ANDROID_SDK_HOME=$ANDROID_HOME
           export ANDROID_NDK_HOME=$ANDROID_NDK_LATEST_HOME
           ./ffmpeg-android-maker.sh -all-free -all-gpl -android=21 -abis=${{ matrix.abi }}
+
+      - name: Upload build artifacts
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/ffmpeg/${{ matrix.abi }}/bin/*
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
