@@ -31,7 +31,16 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/ffmpeg/${{ matrix.abi }}/bin/*
+          file: build/ffmpeg/${{ matrix.abi }}/bin/ffmpeg
+          asset_name: ffmpeg-${{ matrix.abi }}
           tag: ${{ github.ref }}
           overwrite: true
-          file_glob: true
+
+      - name: Upload build artifacts
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/ffmpeg/${{ matrix.abi }}/bin/ffprobe
+          asset_name: ffprobe-${{ matrix.abi }}
+          tag: ${{ github.ref }}
+          overwrite: true
