@@ -25,7 +25,7 @@ jobs:
         run: |
           export ANDROID_SDK_HOME=$ANDROID_HOME
           export ANDROID_NDK_HOME=$ANDROID_NDK_LATEST_HOME
-          ./ffmpeg-android-maker.sh -all-free -android=21 -abis=${{ matrix.abi }}
+          ./ffmpeg-android-maker.sh -all-free -all-gpl -android=21 -abis=${{ matrix.abi }}
 
       - name: Upload build artifacts
         uses: svenstaro/upload-release-action@v2
