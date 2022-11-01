@@ -15,6 +15,7 @@ FFMPEG_GPL_ENABLED=false
 
 # All FREE libraries that are supported
 SUPPORTED_LIBRARIES_FREE=(
+  "libzimg"
   "libaom"
   "libdav1d"
   "libmp3lame"
@@ -118,6 +119,9 @@ for argument in "$@"; do
     ;;
   --enable-libbluray | -bluray)
     EXTERNAL_LIBRARIES+=("libbluray")
+    ;;
+  --enable-libzimg | -zimg)
+    EXTERNAL_LIBRARIES+=("libzimg")
     ;; 
   --enable-all-free | -all-free)
     EXTERNAL_LIBRARIES+=" ${SUPPORTED_LIBRARIES_FREE[@]}"
