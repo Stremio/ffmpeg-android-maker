@@ -25,6 +25,8 @@ done
 DEP_CFLAGS="-I${BUILD_DIR_EXTERNAL}/${ANDROID_ABI}/include"
 DEP_LD_FLAGS="-L${BUILD_DIR_EXTERNAL}/${ANDROID_ABI}/lib $FFMPEG_EXTRA_LD_FLAGS"
 
+patch -f libavcodec/jni.c ${BASE_DIR}/jni.c.patch
+
 ./configure \
   --prefix=${BUILD_DIR_FFMPEG}/${ANDROID_ABI} \
   --enable-cross-compile \
@@ -43,12 +45,50 @@ DEP_LD_FLAGS="-L${BUILD_DIR_EXTERNAL}/${ANDROID_ABI}/lib $FFMPEG_EXTRA_LD_FLAGS"
   --extra-ldflags="$DEP_LD_FLAGS" \
   --disable-vulkan \
   --enable-hwaccels \
+  --enable-pthreads \
+  --enable-v4l2-m2m \
   --enable-jni \
   --enable-mediacodec \
   --enable-decoder=h264_mediacodec \
   --pkg-config=${PKG_CONFIG_EXECUTABLE} \
   ${EXTRA_BUILD_CONFIGURATION_FLAGS} \
   $ADDITIONAL_COMPONENTS || exit 1
+
+# --enable-pic \
+# --enable-optimizations \
+# --enable-swscale \
+
+# --disable-outdev=fbdev \
+# --disable-indev=fbdev \
+# --disable-xmm-clobber-test \
+# --disable-neon-clobber-test \
+# --disable-programs \
+# --disable-postproc \
+# --disable-doc \
+# --disable-htmlpages \
+# --disable-manpages \
+# --disable-podpages \
+# --disable-txtpages \
+# --disable-sndio \
+# --disable-schannel \
+# --disable-securetransport \
+# --disable-xlib \
+# --disable-cuda \
+# --disable-cuvid \
+# --disable-nvenc \
+# --disable-vaapi \
+# --disable-vdpau \
+# --disable-videotoolbox \
+# --disable-audiotoolbox \
+# --disable-appkit \
+# --disable-alsa \
+# --disable-cuda \
+# --disable-cuvid \
+# --disable-nvenc \
+# --disable-vaapi \
+# --disable-vdpau \
+# --enable-static \
+# --disable-shared \
 
 ${MAKE_EXECUTABLE} clean
 ${MAKE_EXECUTABLE} -j${HOST_NPROC}

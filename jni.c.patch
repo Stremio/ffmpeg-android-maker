@@ -1,0 +1,48 @@
+@@ -37,13 +37,25 @@
+ void *java_vm;
+ pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+ 
++jint JNI_OnLoad(JavaVM *vm, void *reserved)
++{
++    av_jni_set_java_vm(vm, NULL);
++    return JNI_VERSION_1_6;
++}
++
+ int av_jni_set_java_vm(void *vm, void *log_ctx)
+ {
+     int ret = 0;
+ 
++    av_log(log_ctx, AV_LOG_ERROR, "av_jni_set_java_vm is called");
+     pthread_mutex_lock(&lock);
+     if (java_vm == NULL) {
+         java_vm = vm;
++        if (java_vm == NULL) {
++            av_log(log_ctx, AV_LOG_ERROR, "java_vm set to NULL");
++        } else {
++            av_log(log_ctx, AV_LOG_ERROR, "java_vm set to Something");
++        }
+     } else if (java_vm != vm) {
+         ret = AVERROR(EINVAL);
+         av_log(log_ctx, AV_LOG_ERROR, "A Java virtual machine has already been set");
+@@ -57,6 +69,7 @@
+ {
+     void *vm;
+ 
++    av_log(log_ctx, AV_LOG_ERROR, "av_jni_get_java_vm is called");
+     pthread_mutex_lock(&lock);
+     vm = java_vm;
+     pthread_mutex_unlock(&lock);
+@@ -68,11 +81,13 @@
+ 
+ int av_jni_set_java_vm(void *vm, void *log_ctx)
+ {
++    av_log(log_ctx, AV_LOG_ERROR, "av_jni_set_java_vm return AVERROR is called");
+     return AVERROR(ENOSYS);
+ }
+ 
+ void *av_jni_get_java_vm(void *log_ctx)
+ {
++    av_log(log_ctx, AV_LOG_ERROR, "av_jni_get_java_vm return NULL is called");
+     return NULL;
+ }
+ 
